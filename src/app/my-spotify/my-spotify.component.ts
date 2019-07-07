@@ -15,6 +15,7 @@ export class MySpotifyComponent implements OnInit {
   public albums;
   public imagen;
   public tracksAlbum;
+  public siguienteUrl;
   constructor(private petitionSpotify : petitionSpotify,
               private router : Router) { }
 
@@ -26,6 +27,7 @@ export class MySpotifyComponent implements OnInit {
 
     this.albums = this.petitionSpotify.getQuery("browse/new-releases?limit=20").subscribe((albums:any)=>{
       this.albums = albums.albums;
+      this.siguienteUrl = albums.albums.next;
       Swal.close();
     });
   }
@@ -39,6 +41,7 @@ export class MySpotifyComponent implements OnInit {
     this.petitionSpotify.getQuery(`search?q=${encodeURIComponent(value)}&type=album&limit=20`).subscribe((albumes:any)=>{
       this.albumes = true;
       this.albums = albumes.albums; 
+      this.siguienteUrl = albumes.albums.next;
     })
   }
 
@@ -66,14 +69,13 @@ export class MySpotifyComponent implements OnInit {
   }
   
   reproducirTrack(track){
-    this.notificar("Informacion","Para poder reproducir un track se debe tener el device_id del computador, por lo tanto este no se podra reporducir","info");
+    this.notificar("Informacion","Para poder reproducir un track se debe tener el device_id del computador, por lo tanto este no se podra reproducir","info");
      this.petitionSpotify.putQuery("me/player/play",{
       "context_uri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
       "offset": {
         "position": 5
       },
     }).subscribe((play)=>{
-      console.log(play)
     }); 
   }
 
@@ -84,9 +86,14 @@ export class MySpotifyComponent implements OnInit {
   }
 
   agregarAlbumFavoritos(album){
+    this.notificar("Exito","Este album se agrego correctamente","success");
     this.petitionSpotify.putQuery(`me/albums?ids={${album.id}}`).subscribe(data=>{
-      this.notificar("Exito","Este album se agrego correctamente","success");
+      
     });
+  }
+
+  ocultar(index){
+    this.albums.items.splice(index,1);
   }
   
   notificar(title, text, type, footer?) {
@@ -96,6 +103,14 @@ export class MySpotifyComponent implements OnInit {
       text: text,
       footer: footer
     })
+  }
+
+  cargarMas(){
+    this.albums = this.petitionSpotify.getQuery(this.siguienteUrl.split("v1/")[1]).subscribe((albums:any)=>{
+      this.albums = albums.albums;
+      this.siguienteUrl = albums.albums.next;
+      Swal.close();
+    });
   }
 
   informacionUsuario(){

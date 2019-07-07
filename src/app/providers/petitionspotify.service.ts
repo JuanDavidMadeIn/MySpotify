@@ -14,7 +14,7 @@ export class petitionSpotify {
               private router : Router) { }
 
   login(){
-    var scopes = 'user-read-private user-read-email user-modify-playback-state user-library-modify'
+    var scopes = 'user-read-private user-read-email user-modify-playback-state'
     let urlLogin = 'https://accounts.spotify.com/authorize' +
       '?response_type=code' +
       '&client_id=' + 'c1e2d5bb35ee45a1964cddd54b6110ae' + 

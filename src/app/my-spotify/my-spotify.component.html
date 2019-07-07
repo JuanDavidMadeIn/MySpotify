@@ -49,6 +49,12 @@
 <section class="content" *ngIf="albums && albumes">
     <div class="container">
         <div class="row">
+            <div class="col-md-12 text-left">
+                    <button type="button" class="btn btn-success"
+                    aria-controls="dropdown-basic" (click)="cargarMas()">
+                    Cargar mas Albúmes
+                </button>
+            </div>
             <div class="col-md-12 text-right">
 
                 <!-- dropdown bootstrap valor softare-->
@@ -67,7 +73,7 @@
         </div>
 
         <div class="row list-songs" >
-            <div *ngFor="let album of albums.items" [ngClass]="{'col-md-3 col-sm-6 col-12' : vista, 'col-md-12 col-12': !vista }">
+            <div *ngFor="let album of albums.items;index as i" [ngClass]="{'col-md-3 col-sm-6 col-12' : vista, 'col-md-12 col-12': !vista }">
                 <div class="card card-main">
                     <div class="card-header">
                         <div class="col-i-left">
@@ -83,7 +89,7 @@
                                 </button>
                                 <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
                                     aria-labelledby="button-basic">
-                                    <li role="menuitem"><a class="dropdown-item" (click)="album.ocultar = true">Ocultar</a></li>
+                                    <li role="menuitem"><a class="dropdown-item" (click)="ocultar(i)">Ocultar</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -98,7 +104,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 text-left">
+                <button type="button" class="btn btn-success"
+                aria-controls="dropdown-basic" (click)="cargarMas()">
+                Cargar mas Albúmes
+            </button>
+        </div>
     </div>
+    
     <!-- <router-outlet></router-outlet>-->
 </section>
 
